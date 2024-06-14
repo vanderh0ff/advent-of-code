@@ -40,15 +40,15 @@ func getTotalWrappingPapperNeeded(width int, length int, height int) int {
 	side1 := length * width
 	side2 := width * height
 	side3 := height * length
-	slack := min(side1,side2,side3)
-	total := (side1 + side2 + side3)*2 + slack
+	slack := min(side1, side2, side3)
+	total := (side1+side2+side3)*2 + slack
 	return total
 }
 
 func getTotalRibbonNeeded(width int, length int, height int) int {
-	sides := []int{width,length,height}
+	sides := []int{width, length, height}
 	sort.Ints(sides)
-	return sides[0] * 2 + sides[1] * 2 + sides[0]*sides[1]*sides[2]
+	return sides[0]*2 + sides[1]*2 + sides[0]*sides[1]*sides[2]
 }
 
 func main() {
@@ -57,8 +57,8 @@ func main() {
 		log.Fatal(err)
 	}
 	defer data.Close()
-	scanner     := bufio.NewScanner(data)
-	totalPaper  := 0
+	scanner := bufio.NewScanner(data)
+	totalPaper := 0
 	totalRibbon := 0
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -67,7 +67,7 @@ func main() {
 			log.Fatal(err)
 		}
 		totalPaper += getTotalWrappingPapperNeeded(length, width, height)
-		totalRibbon += getTotalRibbonNeeded(length,width,height)
+		totalRibbon += getTotalRibbonNeeded(length, width, height)
 	}
 	fmt.Println("Total wrapping paper area needed: ", totalPaper)
 	fmt.Println("Total Ribbon needed: ", totalRibbon)
