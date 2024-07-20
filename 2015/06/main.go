@@ -24,16 +24,16 @@ type instruction = struct {
 	action int
 }
 
-func update(ins instruction, lights [][]bool) {
+func update(ins instruction, lights [][]int) {
 	for i := ins.a.left; i <= ins.a.right; i++ {
 		for j := ins.a.top; j <= ins.a.bottom; j++ {
 			switch ins.action {
 			case on:
-				lights[i][j] = true
+				lights[i][j] = lights[i][j] + 1
 			case off:
-				lights[i][j] = false
+				lights[i][j] = max(lights[i][j]-1, 0)
 			case toggle:
-				lights[i][j] = !lights[i][j]
+				lights[i][j] = lights[i][j] + 2
 			}
 		}
 	}
@@ -118,9 +118,9 @@ func parseInputLine(line []byte) (instruction, error) {
 }
 
 func main() {
-	var lights [][]bool = make([][]bool, 1000, 1000)
+	var lights [][]int = make([][]int, 1000, 1000)
 	for i := range lights {
-		lights[i] = make([]bool, 1000, 1000)
+		lights[i] = make([]int, 1000, 1000)
 	}
 	ins := musReadInput()
 	for i := range ins {
@@ -129,9 +129,7 @@ func main() {
 	total := 0
 	for i := range lights {
 		for j := range lights[i] {
-			if lights[i][j] {
-				total++
-			}
+			total += lights[i][j]
 		}
 	}
 	log.Println("total: ", total)
