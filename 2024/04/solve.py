@@ -1,5 +1,16 @@
 import unittest
 
+def check_x_mas(area):
+    if area[0][0] == "M" and area [0][2] == "M" and area[1][1] == "A" and area[2][2] == "S" and area [2][0] == "S" :
+           return 1
+    if area[0][0] == "S" and area [0][2] == "S" and area[1][1] == "A" and area[2][2] == "M" and area [2][0] == "M" :
+           return 1
+    if area[0][0] == "M" and area [2][0] == "M" and area[1][1] == "A" and area[2][2] == "S" and area [0][2] == "S" :
+           return 1
+    if area[0][0] == "S" and area [2][0] == "S" and area[1][1] == "A" and area[2][2] == "M" and area [0][2] == "M" :
+           return 1
+    return 0
+
 def check_xmas_diagonal(area):
     count = 0
     if area[0][0] == "X" and area[1][1] == "M" and area[2][2] == "A" and area[3][3] == "S":
@@ -93,12 +104,23 @@ class TestXMAS(unittest.TestCase):
                                    "XooS"]
         self.assertEqual(check_xmas_diagonal(xmas_diagonal_forward),2)
 
+    def test_check_x_mas(self):
+        x_mas_1 = [ "MMM", "AAA", "SSS"]
+        self.assertEqual(check_x_mas(x_mas_1), 1)
+        x_mas_2 = [ "MAS", "MAS", "MAS"]
+        self.assertEqual(check_x_mas(x_mas_2), 1)
+        x_mas_3 = ["SAM"]*3
+        self.assertEqual(check_x_mas(x_mas_3), 1)
+        x_mas_4 = ["SSS","AAA","MMM"]
+        self.assertEqual(check_x_mas(x_mas_4), 1)
+
 def main():
-    wordsearch = parse('test.txt')
+    wordsearch = parse('input.txt')
     width = len(wordsearch[0])
     height = len(wordsearch)
     print(f' searching \nwidth: {width} \nheight: {height}')
     total = 0
+    total_xmas = 0
     for i in range(width):
         for j in range(height):
             if i < width - 3:
@@ -116,7 +138,10 @@ def main():
                 if found > 0:
                     print(f'found diagonal at {i},{j}')
                     total+=found
+            if i < width - 2 and j < height - 2:
+                total_xmas += check_x_mas(extract(wordsearch,j,i,3,4))
     print(total)
+    print(total_xmas)
 
 
 if __name__ == "__main__":
